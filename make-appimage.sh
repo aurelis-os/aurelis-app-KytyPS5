@@ -5,8 +5,8 @@ set -eu
 ARCH=$(uname -m)
 export ARCH
 export OUTPATH=./dist
-export ADD_HOOKS="self-updater.hook"
-export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+# export ADD_HOOKS="self-updater.hook"
+# export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export ICON=https://github.com/KytyPS5.png
 export DEPLOY_VULKAN=1
 
@@ -17,7 +17,9 @@ quick-sharun /usr/lib/kytyps5/launcher /usr/lib/kytyps5/kyty_emulator
 echo 'KYTY_APP_LAUNCHER=${APPIMAGE}' >> ./AppDir/.env
 
 # Turn AppDir into AppImage
-quick-sharun --make-appimage
+GITHUB_REPOSITORY= quick-sharun --make-appimage
+rm -f ./dist/*.zsync
+sh ./pkg-meta.sh
 
 # Test the app for 12 seconds, if the test fails due to the app
 # having issues running in the CI use --simple-test instead
